@@ -8,35 +8,39 @@ type collection struct {
 }
 
 func NewCollection() *collection {
-	sm := collection{}
-	sm.data = make(map[string]interface{})
-	sm.keys = make([]string, 0, 0)
-	return &sm
+	col := collection{}
+	col.data = make(map[string]interface{})
+	col.keys = make([]string, 0, 0)
+	return &col
 }
 
-func (sm *collection) Set(key string, value interface{}) {
-	sm.keys = append(sm.keys, key)
-	sm.data[key] = value
+func (col *collection) Set(key string, value interface{}) {
+	col.keys = append(col.keys, key)
+	col.data[key] = value
 }
 
-func (sm *collection) Get(key string) *valobj.Valobj {
+func (col *collection) Get(key string) *valobj.Valobj {
 
-	return valobj.Val(sm.data[key])
+	return valobj.Val(col.data[key])
 }
 
-func (sm *collection) Keys() []string {
-	return sm.keys
+func (col *collection) Keys() []string {
+	return col.keys
 }
 
-func (sm *collection) All() []*valobj.Valobj {
+func (col *collection) All() []*valobj.Valobj {
+	return col.Filter(func(i *valobj.Valobj) bool {
+		return true
+	})
+}
+
+func (col *collection) Filter(f func(obj *valobj.Valobj) bool) []*valobj.Valobj {
 	arr := make([]*valobj.Valobj, 0, 0)
-	for _, v := range sm.Keys() {
-		_ = v
-		arr = append(arr, sm.Get(v))
+	for _, v := range col.Keys() {
+		obj := col.Get(v)
+		if f(obj) {
+			arr = append(arr, obj)
+		}
 	}
 	return arr
 }
-
-
-
-
