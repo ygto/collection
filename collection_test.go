@@ -13,6 +13,24 @@ type TestStruct struct {
 	age      int
 }
 
+func TestHas(t *testing.T) {
+	username := "John Doe"
+	collection := Collection.NewCollection()
+	collection.Set("username", username)
+	if !collection.Has("username") {
+		t.Fail()
+	}
+}
+
+func TestHasNot(t *testing.T) {
+	username := "John Doe"
+	collection := Collection.NewCollection()
+	collection.Set("username", username)
+	if collection.Has("name") {
+		t.Fail()
+	}
+}
+
 func TestStringSetGet(t *testing.T) {
 	username := "John Doe"
 	collection := Collection.NewCollection()

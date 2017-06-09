@@ -14,14 +14,19 @@ func NewCollection() *collection {
 	return &col
 }
 
-func (col *collection) Set(key string, value interface{}) {
-	col.keys = append(col.keys, key)
-	col.data[key] = value
+func (col *collection) Has(key string) bool {
+	_, has := col.data[key]
+	return has
 }
 
 func (col *collection) Get(key string) *valobj.Valobj {
 
 	return valobj.Val(col.data[key])
+}
+
+func (col *collection) Set(key string, value interface{}) {
+	col.keys = append(col.keys, key)
+	col.data[key] = value
 }
 
 func (col *collection) Keys() []string {
